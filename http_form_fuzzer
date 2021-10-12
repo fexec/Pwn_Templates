@@ -26,7 +26,7 @@ while size < 3000:
         buffer += "Content-Type: application/x-www-form-urlencoded\r\n"
         buffer += "Content-Length: " + str(len(inputbuffer)) + "\r\n"
         buffer += "Connection: keep-alive\r\n"
-        buffer += "Referer: http://192.168.149.10/login\r\n"
+        buffer += "Referer: http://127.0.0.1/login\r\n"
         buffer += "\r\n"
 
         buffer += inputbuffer
@@ -34,7 +34,7 @@ while size < 3000:
         buffer = bytes(buffer, 'utf-8')
 
         s = socket.socket()
-        s.connect(("192.168.149.10", 80))
+        s.connect(("127.0.0.1", 80))
 
         s.send(buffer)
         s.close()
